@@ -136,15 +136,27 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class DogName extends StatelessWidget {
- final String name;
 
-const DogName(this.name);
+
+class DogName extends StatefulWidget {
+ final String name;
+ const DogName(this.name);
+  @override
+  DogState createState() {
+    return DogState();
+  }
+}
+
+class DogState extends State<DogName> with AutomaticKeepAliveClientMixin {
+
 final String token = 'sk.eyJ1IjoiYXNpYW5yaWRlciIsImEiOiJja3ZwMjN3eGQxb3Y5MnJvdTB5Z295ZXloIn0.Pcb1ygImlXoSJCrL9c_98w';
 final String streets_style = 'mapbox://styles/mapbox/streets-v11';
 final String outdoor_style = 'mapbox://styles/mapbox/outdoors-v11';
 final String style = 'http://127.0.0.1:8080/style.json';
 
+  @override
+  bool get wantKeepAlive => true;
+  
  @override
  Widget build(BuildContext context) {
    return Center(
