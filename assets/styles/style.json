@@ -17,14 +17,14 @@
     "u88szdde1": {
       "type": "vector",
       "tiles": [
-        "http://127.0.0.1:8080/tiles/{z}/{x}/{y}.pbf"
+        "http://localasset/tiles/{z}/{x}/{y}.pbf"
       ],
       "minZoom": 0,
       "maxZoom": 14
     }
   },
-  "sprite": "http://127.0.0.1:8080/sprites/sprites",
-  "glyphs": "http://127.0.0.1:8080/glyphs/{fontstack}/{range}.pbf",
+  "sprite": "http://127.0.0.1:8090/sprites/sprites",
+  "glyphs": "http://127.0.0.1:8090/glyphs/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "background",

@@ -34,8 +34,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content:
-                Text("we didn't find any nearby restaurants in this area").tr(),
+            content: Text("we didn't find any nearby restaurants in this area").tr(),
             title: Text(
               'no restaurants found',
               style: TextStyle(fontWeight: FontWeight.w700),
@@ -53,13 +52,12 @@ class _RestaurantPageState extends State<RestaurantPage> {
   }
 
   Future getData() async {
-    http.Response response = await http.get(Uri.parse(
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json' +
-            '?location=${widget.placeData!.latitude},${widget.placeData!.longitude}' +
-            '&radius=3000' +
-            // '&type=restaurant' +
-            '&keyword=restaurant' +
-            '&key=${Config().mapAPIKey}'));
+    http.Response response = await http.get(Uri.parse('https://maps.googleapis.com/maps/api/place/nearbysearch/json' +
+        '?location=${widget.placeData!.latitude},${widget.placeData!.longitude}' +
+        '&radius=3000' +
+        // '&type=restaurant' +
+        '&keyword=restaurant' +
+        '&key=${Config().mapAPIKey}'));
 
     if (response.statusCode == 200) {
       var decodedData = jsonDecode(response.body);
@@ -74,8 +72,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
   }
 
   setMarkerIcon() async {
-    _customMarkerIcon =
-        await getBytesFromAsset(Config().restaurantPinIcon, 100);
+    _customMarkerIcon = await getBytesFromAsset(Config().restaurantPinIcon, 100);
   }
 
   _addMarker() {
@@ -105,8 +102,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
     });
 
     super.initState();
-    _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
-      ..addListener(_onScroll);
+    _pageController = PageController(initialPage: 1, viewportFraction: 0.8)..addListener(_onScroll);
     setMarkerIcon();
     getData().then((value) {
       animateCameraAfterInitialization();
@@ -141,10 +137,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
             margin: EdgeInsets.only(left: 5, right: 5),
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: <BoxShadow>[
-                  BoxShadow(color: Colors.grey[300]!, blurRadius: 5)
-                ]),
+                color: Colors.white, boxShadow: <BoxShadow>[BoxShadow(color: Colors.grey[300]!, blurRadius: 5)]),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -159,9 +152,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(width: 0.5, color: Colors.grey[500]!),
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(_photoUrl),
-                          fit: BoxFit.cover)),
+                      image: DecorationImage(image: CachedNetworkImageProvider(_photoUrl), fit: BoxFit.cover)),
                 ),
                 Flexible(
                   child: Wrap(
@@ -173,17 +164,13 @@ class _RestaurantPageState extends State<RestaurantPage> {
                         _alldata[index].name!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w600),
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                       ),
                       Text(
                         _alldata[index].address!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black54),
+                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Colors.black54),
                       ),
                       Row(
                         children: <Widget>[
@@ -208,8 +195,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                           ),
                           Text(
                             '(${_alldata[index].rating})',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 13),
+                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
                           )
                         ],
                       )
@@ -240,9 +226,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                             color: Colors.orangeAccent,
-                            image: DecorationImage(
-                                image: CachedNetworkImageProvider(_photoUrl),
-                                fit: BoxFit.cover)),
+                            image: DecorationImage(image: CachedNetworkImageProvider(_photoUrl), fit: BoxFit.cover)),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(10),
@@ -262,11 +246,13 @@ class _RestaurantPageState extends State<RestaurantPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(_alldata[index].name!, style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600
-                        ),),
-                        SizedBox(height: 15,),
+                        Text(
+                          _alldata[index].name!,
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
                         Row(
                           children: <Widget>[
                             Icon(
@@ -280,8 +266,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                             Expanded(
                               child: Text(
                                 _alldata[index].address!,
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w500),
+                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                               ),
                             )
                           ],
@@ -299,8 +284,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                             ),
                             Text(
                               'Rating : ${_alldata[index].rating}/5',
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500),
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                             )
                           ],
                         ),
@@ -330,8 +314,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                         TextButton.icon(
                           style: TextButton.styleFrom(
                               backgroundColor: Theme.of(context).primaryColor,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25)),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                               padding: EdgeInsets.all(10)),
                           icon: Icon(
                             LineIcons.directions,
@@ -342,9 +325,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                             style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () => MapService.openMap(
-                              _alldata[index].lat!,
-                              _alldata[index].lng!,
-                              _alldata[index].placeId!, context),
+                              _alldata[index].lat!, _alldata[index].lng!, _alldata[index].placeId!, context),
                         ),
                       ],
                     ),
@@ -416,15 +397,9 @@ class _RestaurantPageState extends State<RestaurantPage> {
                     child: Container(
                       height: 45,
                       width: 45,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.grey[300]!,
-                                blurRadius: 10,
-                                offset: Offset(3, 3))
-                          ]),
+                      decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, boxShadow: <BoxShadow>[
+                        BoxShadow(color: Colors.grey[300]!, blurRadius: 10, offset: Offset(3, 3))
+                      ]),
                       child: Icon(Icons.keyboard_backspace),
                     ),
                     onTap: () {
@@ -441,12 +416,10 @@ class _RestaurantPageState extends State<RestaurantPage> {
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(color: Colors.grey, width: 0.5)),
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15, top: 10, bottom: 10, right: 15),
+                      padding: const EdgeInsets.only(left: 15, top: 10, bottom: 10, right: 15),
                       child: Text(
                         '${widget.placeData!.name} - Nearby Restaurants',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
@@ -481,8 +454,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
   moveCamera() {
     _controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(_alldata[_pageController!.page!.toInt()].lat!,
-            _alldata[_pageController!.page!.toInt()].lng!),
+        target: LatLng(_alldata[_pageController!.page!.toInt()].lat!, _alldata[_pageController!.page!.toInt()].lng!),
         zoom: 20,
         bearing: 45.0,
         tilt: 45.0)));

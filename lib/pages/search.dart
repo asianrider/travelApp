@@ -33,28 +33,21 @@ class _SearchPageState extends State<SearchPage> {
         automaticallyImplyLeading: true,
       ),
       body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // suggestion text
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // suggestion text
 
-            Padding(
-              padding: const EdgeInsets.only(top: 15, left: 15, bottom: 5),
-              child: Text(
-                context.watch<SearchBloc>().searchStarted == false
-                    ? 'recent searchs'
-                    : 'we have found',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Colors.grey[800],
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700),
-              ).tr(),
-            ),
-            context.watch<SearchBloc>().searchStarted == false
-                ? SuggestionsUI()
-                : AfterSearchUI()
-          ],
-        ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15, left: 15, bottom: 5),
+            child: Text(
+              context.watch<SearchBloc>().searchStarted == false ? 'recent searchs' : 'we have found',
+              textAlign: TextAlign.left,
+              style: TextStyle(color: Colors.grey[800], fontSize: 18, fontWeight: FontWeight.w700),
+            ).tr(),
+          ),
+          context.watch<SearchBloc>().searchStarted == false ? SuggestionsUI() : AfterSearchUI()
+        ],
+      ),
     );
   }
 
@@ -69,10 +62,7 @@ class _SearchPageState extends State<SearchPage> {
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: "search & explore".tr(),
-          hintStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[800]),
+          hintStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.grey[800]),
           suffixIcon: IconButton(
             icon: Icon(
               Icons.close,
@@ -87,7 +77,7 @@ class _SearchPageState extends State<SearchPage> {
         textInputAction: TextInputAction.search,
         onFieldSubmitted: (value) {
           if (value == '') {
-            openSnacbar(scaffoldKey, 'Type something!');
+            context.openSnackBar('Type something!');
           } else {
             context.read<SearchBloc>().setSearchText(value);
             context.read<SearchBloc>().addToSearchList(value);
@@ -123,15 +113,11 @@ class SuggestionsUI extends StatelessWidget {
                   trailing: IconButton(
                     icon: Icon(Icons.close),
                     onPressed: () {
-                      context
-                          .read<SearchBloc>()
-                          .removeFromSearchList(sb.recentSearchData[index]);
+                      context.read<SearchBloc>().removeFromSearchList(sb.recentSearchData[index]);
                     },
                   ),
                   onTap: () {
-                    context
-                        .read<SearchBloc>()
-                        .setSearchText(sb.recentSearchData[index]);
+                    context.read<SearchBloc>().setSearchText(sb.recentSearchData[index]);
                   },
                 );
               },

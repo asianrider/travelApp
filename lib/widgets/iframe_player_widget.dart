@@ -3,8 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class IframePlayerWidget extends StatefulWidget {
-  const IframePlayerWidget({Key? key, required this.youtubeVideoUrl})
-      : super(key: key);
+  const IframePlayerWidget({Key? key, required this.youtubeVideoUrl}) : super(key: key);
   final String youtubeVideoUrl;
 
   @override
@@ -14,45 +13,45 @@ class IframePlayerWidget extends StatefulWidget {
 class _IframePlayerWidgetState extends State<IframePlayerWidget> {
   late YoutubePlayerController _controller;
 
-  static getYoutubeVideoIdFromUrl (String videoUrl){
+  static getYoutubeVideoIdFromUrl(String videoUrl) {
     return YoutubePlayerController.convertUrlToId(videoUrl);
   }
 
   @override
   void initState() {
     super.initState();
-    _controller = YoutubePlayerController(
-        initialVideoId: getYoutubeVideoIdFromUrl(widget.youtubeVideoUrl),
+    _controller = YoutubePlayerController.fromVideoId(
+        videoId: getYoutubeVideoIdFromUrl(widget.youtubeVideoUrl),
+        autoPlay: false,
         params: YoutubePlayerParams(
-          autoPlay: false,
-          desktopMode: false,
+          // desktopMode: false,
           loop: true,
           showControls: true,
           enableCaption: false,
           showFullscreenButton: true,
-          useHybridComposition: true,
+          // useHybridComposition: true,
           strictRelatedVideos: true,
           showVideoAnnotations: false,
-          privacyEnhanced: true,
-        ))
-      ..listen((value) {
-        if (value.isReady && !value.hasPlayed) {
-          _controller
-            ..hidePauseOverlay()
-            ..hideTopMenu();
-        }
-      });
+          // privacyEnhanced: true,
+        ));
+    // ..listen((value) {
+    //   if (value.isReady && !value.hasPlayed) {
+    //     _controller
+    //       ..hidePauseOverlay()
+    //       ..hideTopMenu();
+    //   }
+    // });
 
-    _controller.onEnterFullscreen = () {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.landscapeRight,
-      ]);
-    };
-
-    _controller.onExitFullscreen = (){
-      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    };
+    _controller.setFullScreenListener((value) {
+      if (value) {
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.landscapeLeft,
+          DeviceOrientation.landscapeRight,
+        ]);
+      } else {
+        SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      }
+    });
   }
 
   @override
@@ -64,7 +63,7 @@ class _IframePlayerWidgetState extends State<IframePlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    const player = YoutubePlayerIFrame();
+    final player = YoutubePlayer(controller: _controller);
     return YoutubePlayerControllerProvider(
       controller: _controller,
       child: Container(
@@ -84,9 +83,8 @@ class _IframePlayerWidgetState extends State<IframePlayerWidget> {
                         color: Colors.white,
                       )),
                     ),
-                    crossFadeState: value.isReady
-                        ? CrossFadeState.showFirst
-                        : CrossFadeState.showSecond,
+                    crossFadeState:
+                        value.playerState == PlayerState.cued ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                     duration: Duration(milliseconds: 200),
                   );
                 },

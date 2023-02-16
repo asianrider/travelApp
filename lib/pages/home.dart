@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:travel_hour/blocs/ads_bloc.dart';
 import 'package:travel_hour/blocs/notification_bloc.dart';
 import 'package:travel_hour/pages/blogs.dart';
@@ -13,8 +14,6 @@ import 'package:travel_hour/pages/states.dart';
 import 'package:travel_hour/services/app_service.dart';
 import 'package:travel_hour/utils/snacbar.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
-
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -23,7 +22,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   int _currentIndex = 0;
   PageController _pageController = PageController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -37,51 +35,38 @@ class _HomePageState extends State<HomePage> {
 //    Feather.user
   ];
 
-
   void onTabTapped(int index) {
-    setState(()=> _currentIndex = index);
-   _pageController.animateToPage(index,
-      curve: Curves.easeIn,
-      duration: Duration(milliseconds: 300)
-    );
-   
+    setState(() => _currentIndex = index);
+    _pageController.animateToPage(index, curve: Curves.easeIn, duration: Duration(milliseconds: 300));
   }
 
-
-  Future configureAds ()async{
+  Future configureAds() async {
     await context.read<AdsBloc>().initiateAdsOnApp();
     context.read<AdsBloc>().loadAds();
   }
 
-
-
- @override
+  @override
   void initState() {
     super.initState();
     AppService().checkInternet().then((hasInternet) {
       if (hasInternet == false) {
-       openSnacbar(scaffoldKey, 'no internet'.tr());
+        context.openSnackBar('no internet'.tr());
       }
     });
 
+    // Future.d(elayed(Duration(milliseconds: 0)).then((value) async {
+    //   await context.read<NotificationBloc>().initFirebasePushNotification(context);
+    //   await context.read<AdsBloc>().checkAdsEnable().then((isEnabled) async {
+    //     if (isEnabled != null && isEnabled == true) {
+    //       debugPrint('ads enabled true');
+    //       configureAds(); /* enable this line to enable ads on the app */
 
-    Future.delayed(Duration(milliseconds: 0))
-    .then((value) async{
-      await context.read<NotificationBloc>().initFirebasePushNotification(context);
-      await context.read<AdsBloc>().checkAdsEnable().then((isEnabled)async{
-        if(isEnabled != null && isEnabled == true){
-          debugPrint('ads enabled true');
-          configureAds();      /* enable this line to enable ads on the app */
-          
-        }else{
-          debugPrint('ads enabled false');
-        }
-      });
-
-    });
+    //     } else {
+    //       debugPrint('ads enabled false');
+    //     }
+    //   });
+    // });)
   }
-  
-
 
   @override
   void dispose() {
@@ -90,18 +75,14 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-
-  Future _onWillPop () async{
-    if(_currentIndex != 0){
-      setState (()=> _currentIndex = 0);
+  Future _onWillPop() async {
+    if (_currentIndex != 0) {
+      setState(() => _currentIndex = 0);
       _pageController.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-    }else{
+    } else {
       await SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop', true);
     }
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +102,7 @@ class _HomePageState extends State<HomePage> {
         ),
         body: PageView(
           controller: _pageController,
-          physics: NeverScrollableScrollPhysics(),  
+          physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
             Explore(),
             StatesPage(),
@@ -136,11 +117,9 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
-
 class DogName extends StatefulWidget {
- final String name;
- const DogName(this.name);
+  final String name;
+  const DogName(this.name);
   @override
   DogState createState() {
     return DogState();
@@ -148,30 +127,38 @@ class DogName extends StatefulWidget {
 }
 
 class DogState extends State<DogName> with AutomaticKeepAliveClientMixin {
-
-final String token = 'sk.eyJ1IjoiYXNpYW5yaWRlciIsImEiOiJja3ZwMjN3eGQxb3Y5MnJvdTB5Z295ZXloIn0.Pcb1ygImlXoSJCrL9c_98w';
-final String streets_style = 'mapbox://styles/mapbox/streets-v11';
-final String outdoor_style = 'mapbox://styles/mapbox/outdoors-v11';
-final String style = 'http://127.0.0.1:8080/style.json';
+  final String token = 'sk.eyJ1IjoiYXNpYW5yaWRlciIsImEiOiJja3ZwMjN3eGQxb3Y5MnJvdTB5Z295ZXloIn0.Pcb1ygImlXoSJCrL9c_98w';
+  final String streets_style = 'mapbox://styles/mapbox/streets-v11';
+  final String outdoor_style = 'mapbox://styles/mapbox/outdoors-v11';
+  final String style = 'http://127.0.0.1:8090/style.json';
+  MapboxMap? mapboxMap;
 
   @override
   bool get wantKeepAlive => true;
-  
- @override
- Widget build(BuildContext context) {
-   return Center(
-     child: DecoratedBox(
-     decoration: BoxDecoration(color: Colors.lightBlueAccent),
-     child: MapboxMap(
-        accessToken: token,
-        styleString: style,
-        initialCameraPosition: CameraPosition(
-          zoom: 5.0,
-          target: LatLng(14.508, 46.048),
-        ),
-     )
-    )
-   );
-  }
-}
 
+  void _onMapCreated(MapboxMap mapboxMap) {
+    this.mapboxMap = mapboxMap;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: DecoratedBox(
+            decoration: BoxDecoration(color: Colors.lightBlueAccent),
+            child: MapWidget(
+              key: ValueKey("mapWidget"),
+              resourceOptions: ResourceOptions(accessToken: token),
+              onMapCreated: _onMapCreated,
+              styleUri: style,
+            )));
+  }
+  // MapboxMap(
+  //   accessToken: token,
+  //   styleString: style,
+  //   initialCameraPosition: CameraPosition(
+  //     zoom: 5.0,
+  //     target: LatLng(14.508, 46.048),
+  //   ),
+  // )));
+
+}

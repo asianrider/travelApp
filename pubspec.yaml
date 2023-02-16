@@ -13,24 +13,22 @@ dependencies:
     sdk: flutter
   
   
-  animated_bottom_navigation_bar: ^0.3.2
+  animated_bottom_navigation_bar: ^1.1.0+1
   cached_network_image: ^3.1.0
-  cloud_firestore: ^3.1.7
+  cloud_firestore: ^4.3.1
   cupertino_icons: ^1.0.3
   dots_indicator: ^2.0.0
   easy_localization: ^3.0.0
-  firebase_analytics: ^9.1.0
-  firebase_auth: ^3.0.2
-  firebase_core: ^1.5.0
-  firebase_messaging: ^11.2.6
-  firebase_storage: ^10.0.2
-  firebase_in_app_messaging: ^0.6.0+7
+  firebase_analytics: ^10.1.0
+  firebase_auth: ^4.2.5
+  firebase_core: ^2.4.1
+  firebase_messaging: ^14.2.1
+  firebase_storage: ^11.0.10
+  firebase_in_app_messaging: ^0.7.0+10
   flare_flutter: ^3.0.2
-  flutter_html: ^2.2.1
   flutter_polyline_points: ^1.0.0
   geo: ^0.3.0
-  google_fonts: ^2.1.0
-  google_maps_flutter: ^2.0.6
+  google_fonts: ^4.0.3
   google_sign_in: ^5.0.7
   html_unescape: ^2.0.0
   http: ^0.13.3
@@ -47,24 +45,26 @@ dependencies:
   url_launcher: ^6.0.9
   the_apple_sign_in: ^1.1.1
   fluttertoast: ^8.0.8
-  flutter_facebook_auth: ^4.0.1
-  flutter_web_browser: ^0.16.0
-  google_mobile_ads: ^1.0.1
+  flutter_facebook_auth: ^5.0.7
+  flutter_web_browser: ^0.17.1
+  google_mobile_ads: ^2.3.0
   facebook_audience_network: ^1.0.1
   carousel_pro_nullsafety: ^1.0.2
   better_player: ^0.0.81
-  youtube_player_iframe: ^2.2.2
+  youtube_player_iframe: ^4.0.4
   flutter_icons:
     git:
       url: https://github.com/adarsh-technocrat/flutter-icons
   md2_tab_indicator:
     git:
       url: https://github.com/westdabestdb/md2_tab_indicator
-  network_info_plus: ^1.0.2
   sqflite: ^2.0.2
   shelf: ^1.2.0
   shelf_router: ^1.1.2
-  mapbox_gl: ^0.15.0
+  flutter_html: ^3.0.0-alpha.6
+  network_info_plus: ^3.0.1
+  mapbox_maps_flutter: ^0.4.0
+  google_maps_flutter: ^2.2.3
 
   
 
@@ -72,7 +72,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_launcher_icons: "^0.9.1"
+  flutter_launcher_icons: ^0.11.0
 
 
 
